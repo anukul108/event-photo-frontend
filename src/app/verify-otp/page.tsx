@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useRef, useState } from "react";
 import { Input, Typography } from "antd";
 import type { InputRef } from "antd";
@@ -40,7 +39,7 @@ export default function OTPInput() {
     };
   
     try {
-      const response = await fetch("http://localhost:5000/user/verify-otp", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user/verify-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

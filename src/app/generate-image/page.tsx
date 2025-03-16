@@ -15,19 +15,6 @@ function GeneratedImage() {
     const html2canvas = (await import("html2canvas")).default;
 
     if (templateRef.current) {
-      console.log(
-        "offsetwidth",
-        templateRef.current.offsetWidth,
-        "scrollwidth",
-        templateRef.current.scrollWidth
-      );
-      console.log(
-        "offsetwidth",
-        templateRef.current.offsetHeight,
-        "scrollwidth",
-        templateRef.current.scrollHeight
-      );
-
       const canvas = await html2canvas(templateRef.current, {
         scale: 3, 
         useCORS: true,

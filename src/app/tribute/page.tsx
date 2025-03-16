@@ -32,48 +32,50 @@ const hashtags = [
 ];
 
 const CustomDropdown = () => {
-  const { tributeData, setTributeData, userId, imageUrl, templateId } = useAppContext();
+  const { tributeData, setTributeData, userId, imageUrl, templateId } =
+    useAppContext();
   const router = useRouter();
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
 
   function handleDropDownChange(value: string) {
     setTributeData({ name: tributeData.name, dropdownValue: value });
   }
 
-  const BASE_URL = "http://localhost:5000"; 
 
-const createEventPhoto = async () => {
-  const eventPhotoData:any = {
-    user_id: userId,
-    image_url: imageUrl,
-    template_id: ''+templateId,
-    name: tributeData.name,
-    feel_about_revfin: tributeData.dropdownValue,
-  };
+  const createEventPhoto = async () => {
+    const eventPhotoData: any = {
+      user_id: userId,
+      image_url: imageUrl,
+      template_id: "" + templateId,
+      name: tributeData.name,
+      feel_about_revfin: tributeData.dropdownValue,
+    };
 
-  try {
-    const response = await fetch(`${BASE_URL}/event-photo`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventPhotoData),
-    });
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/event-photo`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(eventPhotoData),
+        }
+      );
 
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Event Photo Created:", data);
+      setSuccess(true);
+      router.push("/generate-image");
+      return data;
+    } catch (error) {
+      console.error("Error creating event photo:", error);
     }
-
-    const data = await response.json();
-    console.log("Event Photo Created:", data);
-    setSuccess(true)
-    router.push('/generate-image')
-    return data;
-  } catch (error) {
-    console.error("Error creating event photo:", error);
-  }
-};
-
+  };
 
   return (
     <>
@@ -116,7 +118,9 @@ const createEventPhoto = async () => {
         />
       </Space>
       <ButtonComponent
-      isDisabled={tributeData.name && tributeData.dropdownValue ? false : true}
+        isDisabled={
+          tributeData.name && tributeData.dropdownValue ? false : true
+        }
         text={"Generate"}
         onClick={createEventPhoto}
       />

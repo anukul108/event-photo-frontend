@@ -22,7 +22,7 @@ const ImageUpload: React.FC = () => {
   
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/upload-image", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/upload-image`, {
         method: "POST",
         body: formData,
       });
@@ -32,7 +32,7 @@ const ImageUpload: React.FC = () => {
       }
   
       const data = await response.json();
-      setImageUrl(`http://localhost:5000${data.imagePath}`)
+      setImageUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}${data.imagePath}`)
       reader.onloadend = () => {
         setDisplayImage(reader.result as string);
       };

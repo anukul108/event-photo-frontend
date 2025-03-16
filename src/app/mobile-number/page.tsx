@@ -1,10 +1,9 @@
 "use client";
-
 import ButtonComponent from "@/components/button/button";
 import { useAppContext } from "@/context/appContext";
-import { Button, Input, Typography } from "antd";
+import { Input, Typography } from "antd";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 export default function MobileNumber() {
   const { mobileNumber, setMobileNumber, setUserId } = useAppContext();
@@ -12,21 +11,25 @@ export default function MobileNumber() {
   const router = useRouter();
 
   async function postMobileNumber(){
-    const res = await fetch('http://localhost:5000/user',
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({mobile_number: mobileNumber}),
+    try{
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({mobile_number: mobileNumber}),
+        }
+      )
+  
+      const data = await res.json();
+  
+      if(res.status === 201){
+        router.push("/verify-otp")
+        setUserId(data._id)
       }
-    )
-
-    const data = await res.json();
-
-    if(res.status === 201){
-      router.push("/verify-otp")
-      setUserId(data._id)
+    }catch(error){
+      console.log(error)
     }
   }
 
@@ -64,6 +67,7 @@ export default function MobileNumber() {
           style={{ width: "100%", height: 45, marginTop: "10px" }}
         />
       </div>
+
 
     
       <ButtonComponent

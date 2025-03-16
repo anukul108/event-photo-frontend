@@ -1,11 +1,9 @@
 "use client";
 import ButtonComponent from "@/components/button/button";
 import { useRouter } from "next/navigation";
-import personImg from "../../../public/testImg.png";
 import { useEffect, useState } from "react";
 import { Checkbox } from "antd";
 import { useAppContext } from "@/context/appContext";
-import parse from "html-react-parser";
 
 interface TemplateProps {
   backgroundImage: string;
@@ -17,6 +15,9 @@ interface Template {
   template_html: string;
   _id: string
 }
+
+{/* <ReactJsxParser jsx={JSON.parse(templateString)} /> */}
+
 
 export default function template() {
   const { templateId, setTemplateId } = useAppContext();
@@ -30,7 +31,7 @@ export default function template() {
 
   const getTemplates = async () => {
     try {
-      const response = await fetch("http://localhost:5000/templates", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/templates`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -225,7 +226,7 @@ const CelebrationCard = () => {
   );
 };
 
-export const CelebrationCard1 = () => {
+ const CelebrationCard1 = () => {
   return (
     <div
       style={{
